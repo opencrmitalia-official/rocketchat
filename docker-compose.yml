@@ -15,7 +15,6 @@ services:
           echo '  }';
           echo '}';
         ) > /etc/caddy/Caddyfile;
-        cat /etc/caddy/Caddyfile;
         caddy run --config /etc/caddy/Caddyfile --adapter caddyfile"
     ports:
       - 80:80

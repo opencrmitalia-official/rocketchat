@@ -7,7 +7,7 @@ services:
     command: >
       sh -c "
         (
-          echo '${PROXY_DOMAIN} {';
+          echo '${PROXY_DOMAIN}:80, ${PROXY_DOMAIN}:443 {';
           echo '  reverse_proxy rocketchat:3000 {';
           echo '    header_up X-Forwarded-Proto {scheme}';
           echo '    header_up X-Forwarded-For {host}';

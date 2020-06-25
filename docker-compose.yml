@@ -25,7 +25,7 @@ services:
     command: >
       bash -c
         "for i in `seq 1 30`; do
-          nodemon main.js &&
+          nodemon --watch programs/server/npm/node_modules/meteor/http/node_modules app main.js &&
           s=$$? && break || s=$$?;
           echo \"Tried $$i times. Waiting 5 secs...\";
           sleep 5;

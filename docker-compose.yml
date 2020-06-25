@@ -7,7 +7,7 @@ services:
     command: >
       sh -c "
         (
-          echo '${PROXY_DOMAIN}:80, ${PROXY_DOMAIN}:443 {';
+          echo '${PROXY_DOMAIN} {';
           echo '  reverse_proxy rocketchat:3000 {';
           echo '    header_up X-Forwarded-Proto {scheme}';
           echo '    header_up X-Forwarded-For {host}';
@@ -23,11 +23,11 @@ services:
       - rocketchat
 
   rocketchat:
-    build: .
+    image: rocketchat/rocket.chat:latest
     command: >
       bash -c
         "for i in `seq 1 30`; do
-          nodemon main.js &&
+          node main.js &&
           s=$$? && break || s=$$?;
           echo \"Tried $$i times. Waiting 5 secs...\";
           sleep 5;
@@ -37,12 +37,10 @@ services:
       - ./uploads:/app/uploads
     environment:
       - PORT=3000
-      - ROOT_URL=http://127.0.0.1:3000
+      - ROOT_URL=https://${PROXY_DOMAIN}
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
       - MAIL_URL=smtp://smtp.email
-      #- HTTP_PROXY=http://${PROXY_DOMAIN}
-      #- HTTPS_PROXY=https://${PROXY_DOMAIN}
     depends_on:
       - mongo
     ports:
